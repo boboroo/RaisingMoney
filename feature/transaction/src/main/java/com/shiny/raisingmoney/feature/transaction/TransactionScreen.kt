@@ -55,8 +55,13 @@ import com.shiny.raisingmoney.core.designsystem.theme.TextPrimary
 import com.shiny.raisingmoney.core.designsystem.theme.TextTertiary
 import com.shiny.raisingmoney.core.designsystem.util.noRippleClick
 import com.shiny.raisingmoney.core.designsystem.util.rippleClick
-import com.shiny.raisingmoney.core.designsystem.util.dpFontSize
+import com.shiny.raisingmoney.feature.transaction.expense.ExpenseContent
+import com.shiny.raisingmoney.feature.transaction.expense.ExpenseFormEvent
+import com.shiny.raisingmoney.feature.transaction.expense.ExpenseFormUiState
 import com.shiny.raisingmoney.feature.transaction.type.TransactionType
+import com.shiny.raisingmoney.core.designsystem.util.dpFontSize
+import com.shiny.raisingmoney.feature.transaction.expense.ExpenseViewModel
+import com.shiny.raisingmoney.feature.transaction.util.getTodayUtcMillis
 
 /**
  * 이 모듈(feature:transaction)의 public 진입점. `app`은 이 함수만 호출한다.
@@ -66,12 +71,16 @@ import com.shiny.raisingmoney.feature.transaction.type.TransactionType
 fun TransactionScreen(
     modifier: Modifier = Modifier,
     viewModel: TransactionViewModel = hiltViewModel(),
+    expenseViewModel: ExpenseViewModel = hiltViewModel(),
 ) {
     val selectedTransactionType by viewModel.selectedTransactionType.collectAsStateWithLifecycle()
+    val expenseFormState by expenseViewModel.expenseFormState.collectAsStateWithLifecycle()
 
     TransactionScreen(
         selectedTransactionType = selectedTransactionType,
         onSelectTransactionType = viewModel::selectTransactionType,
+        expenseFormState = expenseFormState,
+        onExpenseFormEvent = expenseViewModel::onExpenseFormEvent,
         modifier = modifier,
     )
 }
@@ -83,6 +92,8 @@ fun TransactionScreen(
 internal fun TransactionScreen(
     selectedTransactionType: TransactionType,
     onSelectTransactionType: (TransactionType) -> Unit,
+    expenseFormState: ExpenseFormUiState,
+    onExpenseFormEvent: (ExpenseFormEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -98,10 +109,11 @@ internal fun TransactionScreen(
         )
         TransactionTypeTabs(selected = selectedTransactionType, onSelect = onSelectTransactionType)
         when (selectedTransactionType) {
-            TransactionType.EXPENSE -> {
-                // TODO 지출 입력 폼 추가
-                Spacer(Modifier.weight(1f))
-            }
+            TransactionType.EXPENSE -> ExpenseContent(
+                uiState = expenseFormState,
+                onEvent = onExpenseFormEvent,
+                modifier = Modifier.weight(1f),
+            )
 
             TransactionType.INCOME, TransactionType.TRANSFER -> {
                 // TODO 수입/이체 입력 폼 추가
@@ -282,6 +294,8 @@ private fun TransactionScreenPreview() {
         TransactionScreen(
             selectedTransactionType = TransactionType.EXPENSE,
             onSelectTransactionType = {},
+            expenseFormState = ExpenseFormUiState(dateMillis = getTodayUtcMillis()),
+            onExpenseFormEvent = {},
         )
     }
 }
