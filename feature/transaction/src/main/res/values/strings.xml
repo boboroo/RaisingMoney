@@ -1,0 +1,12 @@
+<resources>
+    <!-- Top bar -->
+    <string name="household_ledger_title">가계부</string>
+
+    <!-- Transaction type tabs -->
+    <string name="transaction_type_income">수입</string>
+    <string name="transaction_type_expense">지출</string>
+    <string name="transaction_type_transfer">이체</string>
+
+    <!-- Ad banner -->
+    <string name="ad_badge">AD</string>
+</resources>
