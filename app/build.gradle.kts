@@ -40,6 +40,9 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:designsystem"))
+    implementation(project(":feature:transaction"))
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

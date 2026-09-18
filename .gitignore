@@ -9,7 +9,7 @@
 !.idea/runConfigurations.xml
 !.idea/AndroidProjectSystem.xml
 .DS_Store
-/build
+build/
 /captures
 .externalNativeBuild
 .cxx

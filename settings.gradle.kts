@@ -24,4 +24,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "RaisingMoney"
 include(":app")
- 
+include(":core:designsystem")
+include(":feature:transaction")
