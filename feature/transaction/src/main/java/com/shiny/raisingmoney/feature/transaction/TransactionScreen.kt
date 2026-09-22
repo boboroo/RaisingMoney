@@ -53,14 +53,14 @@ import com.shiny.raisingmoney.core.designsystem.theme.TabTrack
 import com.shiny.raisingmoney.core.designsystem.theme.TabUnselectedText
 import com.shiny.raisingmoney.core.designsystem.theme.TextPrimary
 import com.shiny.raisingmoney.core.designsystem.theme.TextTertiary
+import com.shiny.raisingmoney.core.designsystem.util.dpFontSize
 import com.shiny.raisingmoney.core.designsystem.util.noRippleClick
 import com.shiny.raisingmoney.core.designsystem.util.rippleClick
 import com.shiny.raisingmoney.feature.transaction.expense.ExpenseContent
 import com.shiny.raisingmoney.feature.transaction.expense.ExpenseFormEvent
 import com.shiny.raisingmoney.feature.transaction.expense.ExpenseFormUiState
-import com.shiny.raisingmoney.feature.transaction.type.TransactionType
-import com.shiny.raisingmoney.core.designsystem.util.dpFontSize
 import com.shiny.raisingmoney.feature.transaction.expense.ExpenseViewModel
+import com.shiny.raisingmoney.feature.transaction.type.TransactionType
 import com.shiny.raisingmoney.feature.transaction.util.getTodayUtcMillis
 
 /**
@@ -105,7 +105,7 @@ internal fun TransactionScreen(
         TopBar(
             title = stringResource(selectedTransactionType.labelRes),
             onBackClick = { /* TODO 기입된 내역 리스트 화면으로 이동 */ },
-            onFavoriteClick = { /* TODO 자주 입력된 내역 리스트 화면으로 이동 */ }
+            onFavoriteClick = { /* TODO 자주 입력된 내역 리스트 화면으로 이동 */ },
         )
         TransactionTypeTabs(selected = selectedTransactionType, onSelect = onSelectTransactionType)
         when (selectedTransactionType) {
@@ -156,7 +156,7 @@ private fun TopBar(
                 color = KeypadKeyText,
                 modifier = Modifier.noRippleClick {
                     onBackClick()
-                }
+                },
             )
         }
 
@@ -185,7 +185,7 @@ private fun FavoriteListIcon(modifier: Modifier = Modifier) {
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
+        horizontalArrangement = Arrangement.Center,
     ) {
         Icon(
             imageVector = Icons.Filled.Star,
@@ -224,10 +224,13 @@ private fun TransactionTypeTabs(
                     .height(44.dp)
                     .clip(RoundedCornerShape(8.dp))
                     .then(
-                        if (isSelected) Modifier
-                            .background(Color.White)
-                            .border(1.5.dp, Coral, RoundedCornerShape(8.dp))
-                        else Modifier,
+                        if (isSelected) {
+                            Modifier
+                                .background(Color.White)
+                                .border(1.5.dp, Coral, RoundedCornerShape(8.dp))
+                        } else {
+                            Modifier
+                        },
                     )
                     .rippleClick { onSelect(type) },
                 contentAlignment = Alignment.Center,
@@ -267,7 +270,7 @@ private fun AdBanner() {
                 stringResource(R.string.ad_badge),
                 color = AdTextDim,
                 fontSize = dpFontSize(11.dp),
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
             )
         }
         Spacer(Modifier.width(12.dp))

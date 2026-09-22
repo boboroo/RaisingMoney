@@ -9,7 +9,7 @@ import androidx.compose.ui.graphics.vector.PathBuilder
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
-/**
+/*
  * Material 아이콘 세트에 없는, 앱 전용 커스텀 아이콘 모음.
  * 도메인 모델을 전혀 모르는 순수 그래픽 리소스.
  * 모든 path는 검정(Color.Black)으로 그려두고, 실제 색은 `Icon(tint = ...)`으로 입힌다.

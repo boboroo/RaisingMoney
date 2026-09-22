@@ -25,62 +25,85 @@ fun ExpenseFormUiState.handleEvent(event: ExpenseFormEvent): ExpenseFormUiState 
     ExpenseFormEvent.DateRowClicked -> copy(
         isSaved = false,
         activeField = ActiveInput.NONE,
-        showDatePicker = true
+        showDatePicker = true,
     )
+
     is ExpenseFormEvent.DatePicked -> copy(
         dateMillis = event.millis ?: dateMillis,
         showDatePicker = false,
     )
+
     ExpenseFormEvent.AmountRowClicked -> copy(
         isSaved = false,
-        activeField = ActiveInput.AMOUNT
+        activeField = ActiveInput.AMOUNT,
     )
+
     ExpenseFormEvent.AmountBackspacePressed -> copy(amount = amount.dropLast(1))
+
     ExpenseFormEvent.AmountEqualsPressed -> copy(
-        amount = evaluateAmountExpression(amount)?.toString() ?: amount
+        amount = evaluateAmountExpression(amount)?.toString() ?: amount,
     )
+
     ExpenseFormEvent.AmountConfirmPressed -> copy(
         amount = evaluateAmountExpression(amount)?.toString() ?: amount,
         activeField = ActiveInput.NONE,
     )
+
     is ExpenseFormEvent.AmountKeyPressed -> copy(amount = nextAmountExpression(amount, event.key))
+
     ExpenseFormEvent.AmountKeypadClosed -> copy(activeField = ActiveInput.NONE)
+
     ExpenseFormEvent.CategoryRowClicked -> copy(
         isSaved = false,
-        activeField = ActiveInput.CATEGORY
+        activeField = ActiveInput.CATEGORY,
     )
+
     is ExpenseFormEvent.CategoryPicked -> copy(
         category = event.category,
-        activeField = ActiveInput.NONE
+        activeField = ActiveInput.NONE,
     )
+
     ExpenseFormEvent.CategoryPickerClosed -> copy(activeField = ActiveInput.NONE)
+
     ExpenseFormEvent.AssetRowClicked -> copy(
         isSaved = false,
-        activeField = ActiveInput.ASSET
+        activeField = ActiveInput.ASSET,
     )
+
     is ExpenseFormEvent.AssetPicked -> copy(
         assetRes = event.assetRes,
-        activeField = ActiveInput.NONE
+        activeField = ActiveInput.NONE,
     )
+
     ExpenseFormEvent.AssetPickerClosed -> copy(activeField = ActiveInput.NONE)
+
     is ExpenseFormEvent.ContentChanged -> copy(content = event.value)
+
     ExpenseFormEvent.ContentFocused -> copy(
         isSaved = false,
-        activeField = ActiveInput.CONTENT
+        activeField = ActiveInput.CONTENT,
     )
+
     ExpenseFormEvent.ContentCleared -> copy(content = "")
+
     ExpenseFormEvent.ContentDone -> copy(activeField = ActiveInput.NONE)
+
     ExpenseFormEvent.ImportantMarkToggled -> copy(isImportantContent = !isImportantContent)
+
     is ExpenseFormEvent.AdditionalInputChanged -> copy(additionalInput = event.value)
+
     ExpenseFormEvent.AdditionalInputFocused -> copy(
         isSaved = false,
-        activeField = ActiveInput.ADDITIONAL_INPUT
+        activeField = ActiveInput.ADDITIONAL_INPUT,
     )
+
     ExpenseFormEvent.AdditionalInputDone -> copy(activeField = ActiveInput.NONE)
+
     ExpenseFormEvent.SaveClicked -> copy(
         isSaved = true,
-        activeField = ActiveInput.NONE
+        activeField = ActiveInput.NONE,
     )
+
     ExpenseFormEvent.ContinueClicked -> copy(
         amount = "",
         category = null,
@@ -89,6 +112,7 @@ fun ExpenseFormUiState.handleEvent(event: ExpenseFormEvent): ExpenseFormUiState 
         additionalInput = "",
         activeField = ActiveInput.NONE,
     )
+
     ExpenseFormEvent.DeleteClicked -> copy(
         dateMillis = getTodayUtcMillis(),
         amount = "",
@@ -124,10 +148,12 @@ private fun nextAmountExpression(current: String, key: String): String {
         in AmountOperators -> {
             if (current.isEmpty() || current.last() in "+-×÷.") current else current + key
         }
+
         "." -> {
             val lastNumberSegment = current.takeLastWhile { it !in "+-×÷" }
             if ("." in lastNumberSegment) current else current + key
         }
+
         else -> { // 숫자
             val lastNumberSegment = current.takeLastWhile { it !in "+-×÷" }
             val digitCount = lastNumberSegment.count { it.isDigit() }
@@ -163,13 +189,18 @@ private fun evaluateAmountExpression(expr: String): Long? {
         var value = parseNumber() ?: return null
         while (true) {
             when (peek()) {
-                '×' -> { pos++; value = value.multiply(parseNumber() ?: return null) }
+                '×' -> {
+                    pos++
+                    value = value.multiply(parseNumber() ?: return null)
+                }
+
                 '÷' -> {
                     pos++
                     val divisor = parseNumber() ?: return null
                     if (divisor.signum() == 0) return null
                     value = value.divide(divisor, 10, RoundingMode.HALF_UP)
                 }
+
                 else -> return value
             }
         }
@@ -179,8 +210,16 @@ private fun evaluateAmountExpression(expr: String): Long? {
         var value = parseTerm() ?: return null
         while (true) {
             when (peek()) {
-                '+' -> { pos++; value = value.add(parseTerm() ?: return null) }
-                '-' -> { pos++; value = value.subtract(parseTerm() ?: return null) }
+                '+' -> {
+                    pos++
+                    value = value.add(parseTerm() ?: return null)
+                }
+
+                '-' -> {
+                    pos++
+                    value = value.subtract(parseTerm() ?: return null)
+                }
+
                 else -> return value
             }
         }

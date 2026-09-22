@@ -73,6 +73,7 @@ import com.shiny.raisingmoney.core.designsystem.theme.SheetGridLine
 import com.shiny.raisingmoney.core.designsystem.theme.TextPrimary
 import com.shiny.raisingmoney.core.designsystem.theme.TextSecondary
 import com.shiny.raisingmoney.core.designsystem.theme.TextTertiary
+import com.shiny.raisingmoney.core.designsystem.util.dpFontSize
 import com.shiny.raisingmoney.core.designsystem.util.noRippleClick
 import com.shiny.raisingmoney.core.designsystem.util.rippleClick
 import com.shiny.raisingmoney.feature.transaction.R
@@ -80,7 +81,6 @@ import com.shiny.raisingmoney.feature.transaction.dummy.AssetRes
 import com.shiny.raisingmoney.feature.transaction.dummy.Categories
 import com.shiny.raisingmoney.feature.transaction.model.Category
 import com.shiny.raisingmoney.feature.transaction.type.ActiveInput
-import com.shiny.raisingmoney.core.designsystem.util.dpFontSize
 import com.shiny.raisingmoney.feature.transaction.util.formatAmount
 import com.shiny.raisingmoney.feature.transaction.util.formatDate
 import com.shiny.raisingmoney.feature.transaction.util.getTodayUtcMillis
@@ -131,7 +131,7 @@ internal fun ExpenseContent(
                 Text(
                     text = date,
                     color = TextPrimary,
-                    fontSize = dpFontSize(17.dp)
+                    fontSize = dpFontSize(17.dp),
                 )
                 Spacer(Modifier.weight(1f))
                 RepeatInstallmentButton {
@@ -152,7 +152,7 @@ internal fun ExpenseContent(
                         formatAmount(uiState.amount)
                     } else {
                         uiState.amount
-                    }
+                    },
                 )
             }
 
@@ -245,7 +245,7 @@ internal fun ExpenseContent(
                 /* TODO
                     입력된 내용이 없다면 Toast 띄우고 저장되지 않도록 수정.
                     local DB에 내역 저장하기
-                */
+                 */
                 focusManager.clearFocus()
                 onEvent(ExpenseFormEvent.SaveClicked)
             },
@@ -380,7 +380,7 @@ private fun RepeatInstallmentButton(
         modifier = Modifier.rippleClick(shape = RoundedCornerShape(6.dp)) {
             onClick()
         },
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Icon(
             imageVector = Icons.Filled.Refresh,
@@ -391,7 +391,7 @@ private fun RepeatInstallmentButton(
         Text(
             text = stringResource(R.string.repeat_installment),
             fontSize = dpFontSize(11.dp),
-            color = TextSecondary
+            color = TextSecondary,
         )
     }
 }
@@ -452,7 +452,7 @@ private fun ContentRow(
 @Composable
 private fun ImportantMarkButton(
     isImportantContent: Boolean,
-    onImportantContentClick: () -> Unit
+    onImportantContentClick: () -> Unit,
 ) {
     val borderShape = RoundedCornerShape(6.dp)
     Box(
@@ -461,7 +461,7 @@ private fun ImportantMarkButton(
             .border(
                 1.5.dp,
                 if (isImportantContent) Coral else TextTertiary,
-                borderShape
+                borderShape,
             )
             .rippleClick(shape = borderShape) {
                 onImportantContentClick()
@@ -472,7 +472,7 @@ private fun ImportantMarkButton(
             text = "!",
             color = if (isImportantContent) Coral else TextTertiary,
             fontWeight = FontWeight.Bold,
-            fontSize = dpFontSize(14.dp)
+            fontSize = dpFontSize(14.dp),
         )
     }
 }
@@ -505,7 +505,7 @@ private fun AdditionalInputRow(
                 singleLine = true,
                 textStyle = LocalTextStyle.current.copy(
                     color = TextPrimary,
-                    fontSize = dpFontSize(16.dp)
+                    fontSize = dpFontSize(16.dp),
                 ),
                 cursorBrush = SolidColor(Coral),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
@@ -513,7 +513,7 @@ private fun AdditionalInputRow(
                     onDone = {
                         keyboardController?.hide()
                         onDoneClick()
-                    }
+                    },
                 ),
                 decorationBox = { innerTextField ->
                     Box(contentAlignment = Alignment.CenterStart) {
@@ -521,7 +521,7 @@ private fun AdditionalInputRow(
                             Text(
                                 stringResource(R.string.additional_input_hint),
                                 color = TextSecondary,
-                                fontSize = dpFontSize(16.dp)
+                                fontSize = dpFontSize(16.dp),
                             )
                         }
                         innerTextField()
@@ -547,9 +547,9 @@ private fun AdditionalInputRow(
                         /* TODO
                         ImagePicker 뜨도록 수정.
                         Image 추가하면 하단에 뜨도록 수정.
-                        */
+                         */
                     }
-                    .padding(10.dp)
+                    .padding(10.dp),
             )
         }
         HorizontalDivider(color = if (focused) Coral else HairLine)
@@ -583,7 +583,7 @@ private fun SaveButtons(onSave: () -> Unit, onContinue: () -> Unit) {
                 text = stringResource(R.string.action_save),
                 color = Color.White,
                 fontSize = dpFontSize(17.dp),
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
             )
         }
         Box(
@@ -598,7 +598,7 @@ private fun SaveButtons(onSave: () -> Unit, onContinue: () -> Unit) {
             Text(
                 text = stringResource(R.string.action_continue),
                 color = TextPrimary,
-                fontSize = dpFontSize(17.dp)
+                fontSize = dpFontSize(17.dp),
             )
         }
     }
@@ -619,37 +619,37 @@ private fun SavedActionRow(
         OutlinedPill(
             text = stringResource(R.string.action_delete),
             modifier = Modifier.weight(1f),
-            onClick = onDelete
+            onClick = onDelete,
         ) {
             Icon(
                 imageVector = Icons.Filled.Delete,
                 contentDescription = null,
                 tint = TextSecondary,
-                modifier = Modifier.size(18.dp)
+                modifier = Modifier.size(18.dp),
             )
         }
         OutlinedPill(
             text = stringResource(R.string.action_copy),
             modifier = Modifier.weight(1f),
-            onClick = onCopy
+            onClick = onCopy,
         ) {
             Icon(
                 imageVector = CopyGlyph,
                 contentDescription = null,
                 tint = TextSecondary,
-                modifier = Modifier.size(18.dp)
+                modifier = Modifier.size(18.dp),
             )
         }
         OutlinedPill(
             text = stringResource(R.string.action_mark_favorite),
             modifier = Modifier.weight(1f),
-            onClick = onBookmark
+            onClick = onBookmark,
         ) {
             Icon(
                 imageVector = Icons.Filled.Star,
                 contentDescription = null,
                 tint = TextSecondary,
-                modifier = Modifier.size(18.dp)
+                modifier = Modifier.size(18.dp),
             )
         }
     }
@@ -669,7 +669,7 @@ private fun OutlinedPill(
             .border(
                 width = 1.dp,
                 color = BorderGray,
-                shape = RoundedCornerShape(10.dp)
+                shape = RoundedCornerShape(10.dp),
             )
             .rippleClick { onClick() },
         horizontalArrangement = Arrangement.Center,
@@ -680,7 +680,7 @@ private fun OutlinedPill(
         Text(
             text = text,
             color = TextPrimary,
-            fontSize = dpFontSize(14.dp)
+            fontSize = dpFontSize(14.dp),
         )
     }
 }
@@ -709,13 +709,13 @@ private fun AmountKeypad(onKey: (String) -> Unit, onClose: () -> Unit) {
             Text(
                 text = stringResource(R.string.label_amount),
                 color = Color.White,
-                fontSize = dpFontSize(16.dp)
+                fontSize = dpFontSize(16.dp),
             )
             Spacer(Modifier.weight(1f))
             Text(
                 text = "🌐",
                 modifier = Modifier.rippleClick { /* TODO 보조 화폐 설정화면으로 이동 */ },
-                fontSize = dpFontSize(18.dp)
+                fontSize = dpFontSize(18.dp),
             )
             Spacer(Modifier.width(20.dp))
             Icon(
@@ -732,7 +732,7 @@ private fun AmountKeypad(onKey: (String) -> Unit, onClose: () -> Unit) {
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .height(56.dp)
+                    .height(56.dp),
             ) {
                 row.forEach { key ->
                     val isConfirm = key == confirmLabel
@@ -741,9 +741,14 @@ private fun AmountKeypad(onKey: (String) -> Unit, onClose: () -> Unit) {
                             .weight(1f)
                             .fillMaxSize()
                             .then(
-                                if (key.isEmpty()) Modifier else Modifier.border(
-                                    0.5.dp, KeypadDivider
-                                )
+                                if (key.isEmpty()) {
+                                    Modifier
+                                } else {
+                                    Modifier.border(
+                                        0.5.dp,
+                                        KeypadDivider,
+                                    )
+                                },
                             )
                             .background(if (isConfirm) Coral else Color.White)
                             .rippleClick(enabled = key.isNotEmpty()) { onKey(key) },
@@ -782,7 +787,7 @@ private fun PickerSheet(
             Text(
                 text = title,
                 color = Color.White,
-                fontSize = dpFontSize(16.dp)
+                fontSize = dpFontSize(16.dp),
             )
             Spacer(Modifier.weight(1f))
             Icon(
@@ -791,7 +796,7 @@ private fun PickerSheet(
                 tint = Color.White,
                 modifier = Modifier
                     .size(20.dp)
-                    .rippleClick { /* TODO 항목 순서 변경 화면으로 이동 */ }
+                    .rippleClick { /* TODO 항목 순서 변경 화면으로 이동 */ },
             )
             Spacer(Modifier.width(20.dp))
             Icon(
@@ -811,7 +816,7 @@ private fun PickerSheet(
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .height(64.dp)
+                    .height(64.dp),
             ) {
                 rowCells.forEach { (index, label) ->
                     val isAddItem = index == addItemIndex
@@ -821,10 +826,11 @@ private fun PickerSheet(
                             .fillMaxSize()
                             .border(
                                 width = 0.5.dp,
-                                color = SheetGridLine
+                                color = SheetGridLine,
                             )
                             .rippleClick {
-                                if (isAddItem) {/* TODO 항목 추가 화면으로 이동. 항목 최대 갯수 지정 필요. */
+                                if (isAddItem) {
+                                    /* TODO 항목 추가 화면으로 이동. 항목 최대 갯수 지정 필요. */
                                 } else {
                                     onPick(index)
                                 }
@@ -844,7 +850,7 @@ private fun PickerSheet(
                         Modifier
                             .weight(1f)
                             .fillMaxSize()
-                            .border(0.5.dp, SheetGridLine)
+                            .border(0.5.dp, SheetGridLine),
                     )
                 }
             }

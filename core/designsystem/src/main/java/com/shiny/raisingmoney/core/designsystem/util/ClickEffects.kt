@@ -36,7 +36,7 @@ fun Modifier.rippleClick(
             this
         } else {
             Modifier.clip(shape)
-        }
+        },
     )
     .clickable(
         enabled = enabled,
