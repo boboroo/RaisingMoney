@@ -10,13 +10,24 @@ plugins {
     alias(libs.plugins.spotless) apply false
 }
 
-// root 프로젝트 자신의 *.kts(build.gradle.kts, settings.gradle.kts)는
-// subprojects{}에 포함되지 않으므로 별도로 적용한다.
+val ktlintEditorConfig = mapOf(
+    "android" to "true",
+    "ktlint_standard_final-newline" to "disabled",
+)
+
+// root 프로젝트 자신의 *.kts(build.gradle.kts, settings.gradle.kts)와
+// included build인 build-logic은 subprojects{}에 포함되지 않으므로 별도로 적용한다.
 apply(plugin = "com.diffplug.spotless")
 
 configure<SpotlessExtension> {
+    kotlin {
+        target("build-logic/**/src/**/*.kt")
+        targetExclude("build-logic/**/build/**")
+        ktlint(libs.versions.ktlint.get()).editorConfigOverride(ktlintEditorConfig)
+    }
     format("kts") {
-        target("*.kts")
+        target("*.kts", "build-logic/**/*.kts")
+        targetExclude("build-logic/**/build/**")
         endWithNewline()
     }
 }
@@ -28,12 +39,7 @@ subprojects {
         kotlin {
             target("src/**/*.kt")
             targetExclude("**/build/**/*.kt")
-            ktlint(libs.versions.ktlint.get()).editorConfigOverride(
-                mapOf(
-                    "android" to "true",
-                    "ktlint_standard_final-newline" to "disabled",
-                ),
-            )
+            ktlint(libs.versions.ktlint.get()).editorConfigOverride(ktlintEditorConfig)
         }
         format("kts") {
             target("*.kts")
