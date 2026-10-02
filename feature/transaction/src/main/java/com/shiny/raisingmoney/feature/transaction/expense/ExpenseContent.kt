@@ -437,8 +437,8 @@ private fun ContentRow(
                     .size(22.dp)
                     .clip(CircleShape)
                     .background(HairLine)
-                    .padding(3.dp)
-                    .rippleClick { onCleared() },
+                    .rippleClick { onCleared() }
+                    .padding(3.dp),
             )
             Spacer(Modifier.width(14.dp))
         }
